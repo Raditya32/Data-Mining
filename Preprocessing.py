@@ -30,6 +30,9 @@ df['price'] = df['price'].interpolate(method='linear')
 df['ma_3']  = df['price'].rolling(window=3, min_periods=1).mean()
 df['ma_12'] = df['price'].rolling(window=12, min_periods=1).mean()
 
+# DROP UNUSED COLUMNS
+df = df.drop(columns=['open', 'high', 'low', 'close'])
+
 df = df.dropna().reset_index()
 
 # SAVE PREPROCESSED DATA

@@ -53,7 +53,7 @@ plt.show()
 # HEATMAP KORELASI
 plt.figure(figsize=(8, 6))
 
-corr = df[["close", "open", "high","low", "ma_3", "ma_12"]].corr()
+corr = df[["price", "ma_3", "ma_12"]].corr()
 
 sns.heatmap(
     corr,
