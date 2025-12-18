@@ -12,11 +12,11 @@ df = pd.read_csv("gold_price_monthly_10y_preprocessed.csv")
 df["date"] = pd.to_datetime(df["date"])
 df = df.sort_values("date").reset_index(drop=True)
 
-# time series bulanan
+# TIME SERIES BULANAN
 df.set_index("date", inplace=True)
 df = df.asfreq("MS")
 
-# TARGET 
+# TARGET
 df["price"] = df["price"].interpolate(method="linear")
 
 # LOG TRANSFORM
@@ -35,15 +35,15 @@ plot_pacf(diff_log_price, lags=24, ax=ax, method="ywm")
 ax.set_title("PACF Log-Price (First Differencing)")
 plt.show()
 
-# TRAIN / TEST SPLIT 
+# TRAIN / TEST SPLIT
 split_idx = int(len(df) * 0.8)
 train = df.iloc[:split_idx]
 test  = df.iloc[split_idx:]
 
-# SARIMA
+# SARIMA MODEL
 model = SARIMAX(
     train["log_price"],
-    order=(1, 1, 1),              
+    order=(1, 1, 1),
     seasonal_order=(1, 1, 0, 12),
     enforce_stationarity=False,
     enforce_invertibility=False
@@ -69,7 +69,7 @@ print("\n===== EVALUASI MODEL =====")
 print(f"RMSE : {rmse:.2f} USD")
 print(f"MAPE : {mape*100:.2f}%")
 
-# FINAL MODEL 
+# FINAL MODEL (FULL DATA)
 final_model = SARIMAX(
     df["log_price"],
     order=(1, 1, 1),
