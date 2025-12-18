@@ -9,6 +9,7 @@ plt.rcParams["figure.figsize"] = (14, 6)
 # LOAD DATA
 df = pd.read_csv("gold_price_monthly_10y_preprocessed.csv")
 
+# DATE FORMAT 
 df["date"] = pd.to_datetime(df["date"])
 df = df.sort_values("date").reset_index(drop=True)
 
@@ -21,7 +22,7 @@ print(df.info())
 print("\n===== DESCRIPTIVE STATISTICS =====")
 print(df.describe().T)
 
-# TREND HARGA EMAS BULANAN 
+# TREND HARGA EMAS BULANAN
 plt.figure()
 plt.plot(df["date"], df["price"], linewidth=2)
 plt.title("Trend Harga Emas Bulanan (10 Tahun)")
@@ -52,9 +53,7 @@ plt.show()
 # HEATMAP KORELASI
 plt.figure(figsize=(8, 6))
 
-corr = df[
-    ["price", "ma_3", "ma_12"]
-].corr()
+corr = df[["close", "open", "high","low", "ma_3", "ma_12"]].corr()
 
 sns.heatmap(
     corr,
