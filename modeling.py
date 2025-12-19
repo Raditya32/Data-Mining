@@ -24,7 +24,7 @@ df["price"] = df["price"].interpolate(method="linear")
 df["log_price"] = np.log(df["price"])
 
 # ADF TEST 
-print("\n===== ADF TEST (LOG PRICE - LEVEL) =====")
+print("\n===== ADF TEST =====")
 adf_result = adfuller(df["log_price"].dropna())
 
 print(f"ADF Statistic : {adf_result[0]:.4f}")
