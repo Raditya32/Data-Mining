@@ -1,8 +1,8 @@
 import pandas as pd
 import numpy as np
 
-# LOAD DATA
-df = pd.read_csv("gold_price_monthly_10y_raw.csv")
+# LOAD DAILY DATA
+df = pd.read_csv("gold_price_daily_10y_raw.csv")
 df.columns = df.columns.str.lower().str.strip()
 
 # DATE CLEAN
@@ -11,7 +11,15 @@ df = df.sort_values('date').reset_index(drop=True)
 
 # TIME SERIES INDEX
 df.set_index('date', inplace=True)
-df = df.asfreq('MS')
+
+# RESAMPLE KE BULANAN
+df = df.resample("MS").agg({
+    "open": "first",
+    "high": "max",
+    "low": "min",
+    "close": "last",
+    "volume": "sum"
+})
 
 # MISSING DATES
 df['close'] = df['close'].interpolate(method='linear')
@@ -31,7 +39,7 @@ df['ma_3']  = df['price'].rolling(window=3, min_periods=1).mean()
 df['ma_12'] = df['price'].rolling(window=12, min_periods=1).mean()
 
 # DROP UNUSED COLUMNS
-df = df.drop(columns=['open', 'high', 'low', 'close'])
+df = df.drop(columns=['open', 'high', 'low', 'close', 'volume'])
 
 df = df.dropna().reset_index()
 
